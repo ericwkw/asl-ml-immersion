@@ -15,11 +15,11 @@
 all: clean install
 
 kernels: \
- reinforcement_learning_kernel \
- uncertainty_aware_models_kernel \
- tf_recommenders_kernel \
  object_detection_kernel \
- pytorch_kfp_kernel
+ pytorch_kfp_kernel \
+ langchain_kernel \
+ langchain_components_kernel \
+ lit_kernel
 
 .PHONY: clean
 clean:
@@ -31,26 +31,29 @@ clean:
 .PHONY: install
 install:
 	@pip install --user -U pip
-	@pip install --user -r requirements.txt
+	@pip install --user "Cython<3"
+	@pip install --user -e .
+	@pip install --user --no-deps -r requirements-without-deps.txt
 	@./scripts/setup_on_jupyterlab.sh
 	@pre-commit install
+	@sudo apt-get update
 	@sudo apt-get -y install graphviz
 
 .PHONY: precommit
 precommit:
 	@pre-commit run --all-files
 
-.PHONY: reinforcement_learning_kernel
-reinforcement_learning_kernel:
-	./kernels/reinforcement_learning.sh
+.PHONY: asl_kernel
+asl_kernel:
+	./kernels/asl_kernel.sh
 
-.PHONY: uncertainty_aware_models_kernel
-uncertainty_aware_models_kernel:
-	./kernels/uncertainty_aware_models.sh
+.PHONY: langchain_kernel
+langchain_kernel:
+	./kernels/langchain.sh
 
-.PHONY: tf_recommenders_kernel
-tf_recommenders_kernel:
-	./kernels/tf_recommenders.sh
+.PHONY: langchain_components_kernel
+langchain_components_kernel:
+	./kernels/langchain_components.sh
 
 .PHONY: object_detection_kernel
 object_detection_kernel:
@@ -60,6 +63,15 @@ object_detection_kernel:
 pytorch_kfp_kernel:
 	./kernels/pytorch_kfp.sh
 
-.PHONY: bert_kernel
-bert_kernel:
-	./kernels/bert_kernel.sh
+.PHONY: gemini_kernel
+gemini_kernel:
+	./kernels/gemini.sh
+
+.PHONY: lit_kernel
+lit_kernel:
+	./kernels/lit.sh
+
+
+.PHONY: tests
+tests:
+	pytest tests/unit

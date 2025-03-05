@@ -5,16 +5,14 @@ _For maintainers:_
 ## `pre-commit`
 
 ### TLDR
+`pre-commit` is installed in the setup process defined in the [README.md](https://github.com/GoogleCloudPlatform/asl-ml-immersion/blob/master/README.md). When you commit, pre-commit checks the syntax and suggest auto-fixes if necessary. Accept auto-fixes, and resolve any issues, and re-commit.
 
-If the `pre-commit.ci` check fails, please install and run `pre-commit` in your development environment as follows, accept auto-fixes and resolve any issues, and re-commit.
-
+Normal development flow:
 ```bash
-python3 -m pip install pre-commit
-cd ~/asl-ml-immersion  # or wherever your repo is
-pre-commit install
-pre-commit run --all-files
-# fix any issues that weren't auto-fixed, such as `pylint` issues
-git commit -a -m "pre-commit"
+git add <MODIFIED FILES>
+git commit -m "YOUR COMMIT MESSAGE" # pre-commit checks the syntax and suggest auto-fixes if necessary.
+# Check the auto-fixes and resolve any issues.
+git commit -m "YOUR COMMIT MESSAGE" # re-commit.
 ```
 
 ### Intro: Linters
@@ -67,6 +65,18 @@ This repo's `.pre-commit-config.yaml` includes:
 
 ### FAQ
 
+#### _Local pre-commit results is different from the GitHub pre-commit.ci?_
+
+- Check the local pre-commit environment is up to date. If not, pull the latest repository and run `pre-commit install` at the repository root.
+
+- If not fixed yet, use the command below to reproduce the same environment as the pre-commit.ci and debug the issue.
+
+```
+docker run -v $PWD:/src:rw --workdir /src --rm \
+-ti ghcr.io/pre-commit-ci/runner-image \
+pre-commit install && pre-commit run --all-files
+```
+
 #### _How can I ask `pylint` to ignore something?_
 
 With comments like `# pylint: disable=[rule]`, see [the docs](https://pylint.pycqa.org/en/latest/user_guide/message-control.html).
@@ -96,7 +106,7 @@ Syntax errors understandably trip multiple checks. The best way is to try to rew
 variable =  # TODO
 
 # use this:
-variable = None  # TODO
+variable = ...  # TODO
 ```
 
 ```python

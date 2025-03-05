@@ -32,11 +32,8 @@ python -m ipykernel install --user --name=$ENVNAME
 
 # Install Object Detection API and its dependencies
 pip install -q -U pip
+pip install -q pyyaml==5.3.1
+pip install -q tensorflow==2.12.0 tensorflow_text==2.12.1 tf-models-official==2.12.0
 pip install -q .
-
-# Add the missing builer.py file due to the breaking change.
-# https://stackoverflow.com/questions/71759248/importerror-cannot-import-name-builder-from-google-protobuf-internal
-pwd
-wget https://raw.githubusercontent.com/protocolbuffers/protobuf/main/python/google/protobuf/internal/builder.py -O /home/jupyter/.local/lib/python3.7/site-packages/google/protobuf/internal/builder.py
 
 deactivate
