@@ -1,0 +1,8 @@
+{
+  "name": "crypto-loan-app",
+  "version": "1.0.0",
+  "private": true,
+  "devDependencies": {
+    "@react-native-community/cli": "latest"
+  }
+}
